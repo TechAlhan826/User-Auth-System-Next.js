@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
-export default function Login(){
+export default function Login() {
     const [user, setUser] = useState({
         //"username": "",
         "email": "",
