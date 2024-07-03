@@ -1,4 +1,4 @@
-"use client" 
+"use client"
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -6,14 +6,13 @@ import { useRouter } from "next/navigation";
 import axios from "axios"
 import { toast, Toaster } from "react-hot-toast";
 
-export default function signup(){
+export default function Signup(){
     const router = useRouter();
     const [user, setUser] = useState({
         "username": "",
         "email": "",
         "password": ""
     })
-
 
 const [buttonDisabled, setButtonDisabled] = useState(false);
 const [loading, setLoading] = useState(false);
@@ -31,11 +30,9 @@ useEffect(() => {
             if(!buttonDisabled){
             setLoading(true);
             const resp = await axios.post("/api/users/register", user);
-            console.log("Registration Success !", resp.data);
             toast.success("Registration Success !");
             router.push("/login"); 
         }} catch(error: any){
-            console.log("Registration Failed !", error.message);
             toast.error(error.message);
         } finally{
             setLoading(false)
@@ -87,5 +84,3 @@ useEffect(() => {
         </div>
     );
 }
-
-//<!--...user keep everything same just update username attribute-->
