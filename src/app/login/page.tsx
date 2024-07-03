@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import users from "@/models/userModel";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function login(){
     const [user, setUser] = useState({
@@ -14,14 +14,18 @@ export default function login(){
     })
 
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const onLogin = async ()=>{
-        // check if user already exists
-        
-        
         try{
-           } catch(error: any){
-
+            setLoading(true);
+            const resp = await axios.post("/api/users/login", user);
+            console.log("Login Success !", resp.data);
+            toast.success("Login Success !");
+            router.push("/profile/1"); 
+        } catch(error: any){
+            console.log("Login Failed !", error.message);
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }
@@ -55,6 +59,7 @@ export default function login(){
              />
 
              <button onClick={onLogin} className="p-2 m-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:shadow-blue">Login</button>
+             <Toaster position="top-right"/>
              <Link href="/register">New User ! Register Here</Link>
 
         </div>
