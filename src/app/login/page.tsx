@@ -1,25 +1,35 @@
 "use client"
 
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios"
+import axios from "axios";
+import users from "@/models/userModel";
 
 export default function login(){
-    const [user, setUser] = React.useState({
+    const [user, setUser] = useState({
         //"username": "",
         "email": "",
         "password": ""
     })
 
+    const [loading, setLoading] = useState(false);
+
     const onLogin = async ()=>{
-        console.log("Login Form Submitted !");
+        // check if user already exists
         
+        
+        try{
+           } catch(error: any){
+
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen py-2">
-            <h1 className="m-4 text-4xl">Login</h1>
+            <h1 className="m-4 text-4xl">{loading ? "Processing" : "Login"}</h1>
             <hr />
             
             

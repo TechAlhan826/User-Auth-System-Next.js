@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios"
-import toast from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function signup(){
     const router = useRouter();
@@ -28,18 +28,19 @@ useEffect(() => {
 
     const onRegister = async ()=>{
         try{
+            if(!buttonDisabled){
             setLoading(true);
             const resp = await axios.post("/api/users/register", user);
             console.log("Registration Success !", resp.data);
             toast.success("Registration Success !");
             router.push("/login"); 
-        } catch(error: any){
+        }} catch(error: any){
             console.log("Registration Failed !", error.message);
             toast.error(error.message);
         } finally{
             setLoading(false)
         }
-        console.log("Register Form Submitted !");     
+        toast("Register Form Submitted !");     
     }
 
     return (
@@ -47,7 +48,8 @@ useEffect(() => {
             <h1 className="m-4 text-4xl">{loading ? "Processing..." : "Register"}</h1>
             <hr />
             <label htmlFor="username">Username </label>
-            <input 
+            <input
+            required 
              className="p-2 m-4 text-black border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
              id="username"
              type="text"
@@ -58,6 +60,7 @@ useEffect(() => {
              
              <label htmlFor="email">Email Id</label>
              <input 
+             required
              className="p-2 m-4 text-black border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
              id="email"
              type="email"
@@ -68,6 +71,7 @@ useEffect(() => {
              
              <label htmlFor="password">Password</label>
              <input 
+             required
              className="p-2 m-4 text-black border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
              id="password"
              type="password"
@@ -76,7 +80,8 @@ useEffect(() => {
              onChange={(e) => setUser({...user, password:e.target.value})}
              />
 
-             <button onClick={onRegister} className="p-2 m-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:shadow-blue">{buttonDisabled ? "Fill The Form" : "Sign Up"}</button>
+             <button type="submit" onClick={onRegister} className="p-2 m-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:shadow-blue">{buttonDisabled ? "Fill The Form" : "Sign Up"}</button>
+             <Toaster position="top-right" />
              <Link href="/login">Already Registered ! Login Here</Link>
 
         </div>

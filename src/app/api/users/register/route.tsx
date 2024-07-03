@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs" ;
 export async function POST(request: NextRequest){
     try{
         const reqBody  = await request.json();
-        const { username, email, password } = reqBody
+        var { username, email, password } = reqBody
 
         console.log(reqBody); // remove in PROD
 
@@ -19,8 +19,8 @@ export async function POST(request: NextRequest){
         }
 
         //hashing of password
-        const salt = await bcryptjs.genSaltSync(10);
-        const hashedPass = await bcryptjs.hashSync(password, salt);
+        const salt = await bcryptjs.genSaltSync(10); 
+        password = await bcryptjs.hashSync(password, salt);
 
         const newUser = new users({
             username,
