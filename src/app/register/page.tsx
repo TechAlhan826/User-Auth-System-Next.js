@@ -40,7 +40,7 @@ export default function Signup() {
         } finally {
             setLoading(false);
         }
-        toast("Register Form Submitted !");     
+         
     }
 
     return (
