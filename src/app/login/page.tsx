@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
@@ -16,14 +16,25 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+
+    useEffect(()=>{
+        if(user.email.length > 0 && user.password.length > 0){
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+    })
+
     const onLogin = async () => {
         try {
+            if(!buttonDisabled){
             setLoading(true);
             const resp = await axios.post("/api/users/login", user);
-            console.log("Login Success !", resp.data);
+            console.log("Login Success !", resp.data.message);
             toast.success("Login Success !");
             router.push("/profile/1"); 
-        } catch (error: any) {
+        }} catch (error: any) {
             console.log("Login Failed !", error.message);
             toast.error(error.message);
         } finally {
@@ -37,6 +48,7 @@ export default function Login() {
             <hr />
             <label htmlFor="email">Email Id</label>
             <input 
+            required
                 className="p-2 m-4 text-black border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
                 id="email"
                 type="email"
@@ -46,6 +58,7 @@ export default function Login() {
             />
             <label htmlFor="password">Password</label>
             <input 
+            required
                 className="p-2 m-4 text-black border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
                 id="password"
                 type="password"
@@ -53,7 +66,7 @@ export default function Login() {
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
             />
-            <button onClick={onLogin} className="p-2 m-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:shadow-blue">Login</button>
+            <button onClick={onLogin} className="p-2 m-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 hover:shadow-blue">{buttonDisabled ? "Enter Credentials" : "Login"}</button>
             <Toaster position="top-right"/>
             <Link href="/register">New User ! Register Here</Link>
         </div>
